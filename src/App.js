@@ -120,12 +120,12 @@ function App() {
         try {
             console.log('Sending request to server');
             setDisplayMessage('Analyzing playlist... this takes a couple minutes.');
-            await axios.post('http://127.0.0.1:5000/get_playlist_name', { playlist_link: playlistLink }).then((response) => {
+            await axios.post('http://ec2-18-223-205-172.us-east-2.compute.amazonaws.com:8000/get_playlist_name', { playlist_link: playlistLink }).then((response) => {
                 const playlist_name = response.data.playlist_name;
                 console.log('Success:', response);
                 setPlaylistName(`${playlist_name}`);
             });
-            await axios.post('http://127.0.0.1:5000/get_prompts', { playlist_link: playlistLink }).then((response) => {
+            await axios.post('http://ec2-18-223-205-172.us-east-2.compute.amazonaws.com:8000/get_prompts', { playlist_link: playlistLink }).then((response) => {
                 setDisplayMessage('Thinking of designs...');
                 const prompts = response.data.prompts;
                 const randomID = response.data.id;
@@ -137,7 +137,7 @@ function App() {
                 setDisplayMessage('Generating images...');
                 prompts.forEach((prompt, index) => {
                     console.log('Prompt:', prompt.prompt);
-                    axios.post('http://127.0.0.1:5000/generate_image', { prompt: prompt.prompt, id: randomID, playlist: playlistLink }).then((response) => {
+                    axios.post('http://ec2-18-223-205-172.us-east-2.compute.amazonaws.com:8000/generate_image', { prompt: prompt.prompt, id: randomID, playlist: playlistLink }).then((response) => {
                         const url = response.data.url;
                         const revised_promp = response.data.revised_prompt;
                         switch (index) {
